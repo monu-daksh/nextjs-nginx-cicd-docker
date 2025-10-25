@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Header from "./Components/Header";
 
-
 const topics = [
   {
     title: "Nginx",
@@ -24,6 +23,31 @@ const topics = [
     title: "EC2",
     description:
       "Amazon EC2 provides scalable virtual servers. We deploy our Next.js projects here and serve them via Nginx for production-ready hosting.",
+  },
+  {
+    title: "Elasticsearch",
+    description:
+      "Elasticsearch is a distributed search and analytics engine. It allows us to perform fast full-text searches, aggregations, and analyze large volumes of data in real-time.",
+  },
+  {
+    title: "Kubernetes",
+    description:
+      "Kubernetes is a container orchestration platform. It manages scaling, deployment, and operation of containerized applications automatically across clusters of machines.",
+  },
+  {
+    title: "Terraform",
+    description:
+      "Terraform is an Infrastructure as Code tool. It allows us to define cloud infrastructure using code, ensuring reproducible environments and easier management of resources.",
+  },
+  {
+    title: "PM2",
+    description:
+      "PM2 is a process manager for Node.js applications. It helps keep applications alive, enables easy monitoring, and supports automatic restart on crashes.",
+  },
+  {
+    title: "SonarQube",
+    description:
+      "SonarQube is a code quality and security analysis tool. It analyzes code for bugs, vulnerabilities, and code smells, helping maintain high-quality software.",
   },
 ];
 
