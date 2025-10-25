@@ -1,6 +1,8 @@
-"use client"
+"use client";
 
 import { useState } from "react";
+import Header from "./Components/Header";
+
 
 const topics = [
   {
@@ -30,36 +32,40 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col items-center p-8">
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">
-        DevOps & Hosting Overview
-      </h1>
-      <p className="text-gray-600 max-w-xl text-center mb-10">
-        This page demonstrates our setup: projects hosted on EC2, served by Nginx,
-        containerized with Docker, and automated via CI/CD pipelines.
-      </p>
+      <Header />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
-        {topics.map((topic, idx) => (
-          <div
-            key={idx}
-            className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-xl transition"
-            onClick={() =>
-              setActiveIndex(activeIndex === idx ? null : idx)
-            }
-          >
-            <h2 className="text-2xl font-semibold text-gray-800">
-              {topic.title}
-            </h2>
-            {activeIndex === idx && (
-              <p className="mt-4 text-gray-600">{topic.description}</p>
-            )}
-            {activeIndex !== idx && (
-              <p className="mt-2 text-gray-400 italic text-sm">
-                Click to learn more...
-              </p>
-            )}
-          </div>
-        ))}
+      <div className="pt-24 flex flex-col items-center w-full">
+        <h1 className="text-4xl font-bold text-gray-800 mb-6">
+          DevOps & Hosting Overview
+        </h1>
+        <p className="text-gray-600 max-w-xl text-center mb-10">
+          This page demonstrates our setup: projects hosted on EC2, served by
+          Nginx, containerized with Docker, and automated via CI/CD pipelines.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-5xl">
+          {topics.map((topic, idx) => (
+            <div
+              key={idx}
+              className="bg-white shadow-md rounded-lg p-6 cursor-pointer hover:shadow-xl transition"
+              onClick={() =>
+                setActiveIndex(activeIndex === idx ? null : idx)
+              }
+            >
+              <h2 className="text-2xl font-semibold text-gray-800">
+                {topic.title}
+              </h2>
+              {activeIndex === idx && (
+                <p className="mt-4 text-gray-600">{topic.description}</p>
+              )}
+              {activeIndex !== idx && (
+                <p className="mt-2 text-gray-400 italic text-sm">
+                  Click to learn more...
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </main>
   );
