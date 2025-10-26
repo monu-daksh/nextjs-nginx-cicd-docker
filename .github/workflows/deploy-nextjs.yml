@@ -1,6 +1,5 @@
 name: Deploy Next.js to EC2 (Self-Hosted)
 
-# Use self-hosted runner
 on:
   push:
     branches:
@@ -8,40 +7,49 @@ on:
 
 jobs:
   deploy:
-    # Tell GitHub to use your self-hosted EC2 runner
     runs-on: self-hosted
 
     steps:
-      # 1️⃣ Checkout code
+      # 1️⃣ Checkout latest code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2️⃣ Setup Node.js (Node 20 for Next.js 15)
+      # 2️⃣ Cache Node.js dependencies for faster builds
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 3️⃣ Setup Node.js 20 (for Next.js 15)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
+          cache: 'npm'
 
-      # 3️⃣ Install dependencies
+      # 4️⃣ Install dependencies (use cached & faster install)
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline --no-audit
 
-      # 4️⃣ Build Next.js app
-      - name: Build Next.js
-        run: npm run build
+      # 5️⃣ Build the Next.js project
+      - name: Build Next.js app
+        run: npm run build --max-old-space-size=1024
 
-      # 5️⃣ Stop existing PM2 process (if running)
+      # 6️⃣ Stop existing PM2 process if running
       - name: Stop existing PM2 process
         run: pm2 stop nextjs-app || true
 
-      # 6️⃣ Start / Restart Next.js app using PM2
+      # 7️⃣ Start or restart Next.js app with PM2
       - name: Start Next.js with PM2
         run: pm2 start npm --name "nextjs-app" -- run start -- -p 4000
 
-      # 7️⃣ Save PM2 process list (for auto-restart on EC2 reboot)
+      # 8️⃣ Save PM2 process list for restart after reboot
       - name: Save PM2 process list
         run: pm2 save
 
-      # 8️⃣ Optional: Restart Nginx (if you updated config)
+      # 9️⃣ Reload Nginx to apply new configuration
       - name: Reload Nginx
         run: sudo systemctl reload nginx
